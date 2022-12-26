@@ -7,3 +7,4 @@ The second, called "multi_mandelbrot.c" generates an image of the mandelbrot fra
 
 The third, called "mySegmentation.py" segments a text using a unique set of rules I created. Based on this segmentation, it outputs the number of sentences, words, unique words, and average sentence length of the text. As I learned in my Computational Linguistics class, these figures are useful for digitalizing and translating texts. 
 
+You can find instructions for running each code at the top of their file. 
