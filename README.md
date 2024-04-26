@@ -9,4 +9,7 @@ The third, called "mySegmentation.py" segments a text using a unique set of rule
 
 The fourth, called "SenatorsDataVisualization.py" transforms raw data into 2 pie charts which compare race data about the general US population and the US senate. I created this program for my Recent Advancements In Computer Science class. It utilises PANDAS to generate the pie charts which you can find in the file named "SenatorsDataVisualizationOutput.png"
 
+The fifth, called "swat_site.html" creates 3 chart.js graphs to show solar irradiance and horizontal irradiance in Swarthmore PA over the last day, week, and month. I created this site as part of my Senior Thesis Project. You can view the site here: http://fubini.swarthmore.edu/~solarlab/solarlab_graphs.html 
+and read my report here: https://docs.google.com/document/d/1tL662UDWd4Fn_bcTPMg1VwzOklz710BosfRMwwPw_Ek/edit?usp=sharing 
+
 You can find instructions for running each code at the top of their file. 
