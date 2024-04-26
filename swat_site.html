@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Fetch and Graph CSV</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+        <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+        <meta HTTP-EQUIV="REFRESH" CONTENT="300;URL=http://loin.cs.brynmawr.edu/~memcculloc/loin_site.html">
+    </head>
+    <body>
+        <h1>Swarthmore Solar Lab Data</h1>
+        <h2>Solar Irradiance Data: Today</h2>
+        <div style="width:600px;height:600px">
+            <canvas id="myDayChart" width="600" height="600"></canvas>
+            </div>
+        <h2>Solar Irradiance Data: Last 7 Days</h2>
+        <div style="width:600px;height:600px">
+            <canvas id="myWeekChart" width="600" height="600"></canvas>
+            </div>
+        <h2>Solar Irradiance Data: Last 30 Days</h2>
+        <div style="width:600px;height:600px">
+            <canvas id="myMonthChart" width="600" height="600"></canvas>
+            </div>
+        <script>
+            const dayXlabels = [];
+            const Day_Beam_Avg_labels = []; 
+            const Day_Horizontal_Avg_labels = []; 
+            async function chartDayBeams() {
+                const dayCtx = document.getElementById('myDayChart').getContext('2d');
+                
+                const dayVals = await getDayData();
+                const myDayChart = new Chart(dayCtx, {
+                    type: 'line',
+                    data: {
+                    labels: dayXlabels,
+                    datasets: [
+                    {
+                        label: 'Beam_Avg',
+                        data: Day_Beam_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(235, 217, 52, 1)',
+                        backgroundColor: 'rgba(235, 217, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                        {
+                        label: 'Horizontal_Avg',
+                        data: Day_Horizontal_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(162, 235, 52, 1)',
+                        backgroundColor: 'rgba(162, 235, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                    ]
+                    },
+                    options: {
+                        responsive: false 
+                    }
+                });
+            }
+            const weekXlabels = [];
+            const Week_Beam_Avg_labels = []; 
+            const Week_Horizontal_Avg_labels = []; 
+            async function chartWeekBeams() {
+                const weekCtx = document.getElementById('myWeekChart').getContext('2d');
+                
+                const weekVals = await getWeekData();
+                const myWeekChart = new Chart(weekCtx, {
+                    type: 'line',
+                    data: {
+                    labels: weekXlabels,
+                    datasets: [
+                    {
+                        label: 'Beam_Avg',
+                        data: Week_Beam_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(235, 217, 52, 1)',
+                        backgroundColor: 'rgba(235, 217, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                        {
+                        label: 'Horizontal_Avg',
+                        data: Week_Horizontal_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(162, 235, 52, 1)',
+                        backgroundColor: 'rgba(162, 235, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                    ]
+                    },
+                    options: {}
+                });
+            }
+            const monthXlabels = [];
+            const Month_Beam_Avg_labels = []; 
+            const Month_Horizontal_Avg_labels = []; 
+            async function chartMonthBeams() {
+                const monthCtx = document.getElementById('myMonthChart').getContext('2d');
+                
+                const monthVals = await getMonthData();
+                const myMonthChart = new Chart(monthCtx, {
+                    type: 'bar',
+                    data: {
+                    labels: monthXlabels,
+                    datasets: [
+                    {
+                        label: 'Beam_Avg',
+                        data: Month_Beam_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(235, 217, 52, 1)',
+                        backgroundColor: 'rgba(235, 217, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                        {
+                        label: 'Horizontal_Avg',
+                        data: Month_Horizontal_Avg_labels,
+                        fill: false,
+                        borderColor: 'rgba(162, 235, 52, 1)',
+                        backgroundColor: 'rgba(162, 235, 52, 0.5)',
+                        borderWidth: 1
+                        },
+                    ]
+                    },
+                    options: {}
+                });
+            }
+            
+            async function getDayData(){
+                const dayResponse = await fetch('today.csv');
+                //const response = await fetch('CR1000XSeries_E14SolarLab.csv');
+                //const response = await fetch('toy.csv');
+                const dayData = await dayResponse.text();
+                //console.log(data)
+                //below splits the data and takes off the first x rows if chosen
+                const dayRows = dayData.split('\n').slice(0);
+                dayRows.forEach(elt => {
+                    const dayRow = elt.split(',');
+                    timestamp = dayRow[0];
+                    dayXlabels.push(timestamp); 
+                    const Day_Beam_Avg = dayRow[1];
+                    Day_Beam_Avg_labels.push(Day_Beam_Avg);
+                    const Day_Horizontal_Avg = dayRow[2];
+                    Day_Horizontal_Avg_labels.push(Day_Horizontal_Avg);
+                });
+                console.log(dayRows);
+        }
+        async function getWeekData(){
+                const weekResponse = await fetch('week.csv');
+                //const response = await fetch('CR1000XSeries_E14SolarLab.csv');
+                //const response = await fetch('toy.csv');
+                const weekData = await weekResponse.text();
+                //console.log(data)
+                //below splits the data and takes off the first x rows if chosen
+                const weekRows = weekData.split('\n').slice(0);
+                weekRows.forEach(elt => {
+                    const weekRow = elt.split(',');
+                    timestamp = weekRow[0];
+                    weekXlabels.push(timestamp); 
+                    const Week_Beam_Avg = weekRow[1];
+                    Week_Beam_Avg_labels.push(Week_Beam_Avg);
+                    const Week_Horizontal_Avg = weekRow[2];
+                    //console.log(Week_Horizontal_Avg);
+                    Week_Horizontal_Avg_labels.push(Week_Horizontal_Avg);
+                });
+                console.log(weekRows);
+        }
+        async function getMonthData(){
+                const monthResponse = await fetch('month.csv');
+                const monthData = await monthResponse.text();
+                const monthRows = monthData.split('\n').slice(0);
+                monthRows.forEach(elt => {
+                    const monthRow = elt.split(',');
+                    timestamp = monthRow[0];
+                    monthXlabels.push(timestamp); 
+                    const Month_Beam_Avg = monthRow[1];
+                    Month_Beam_Avg_labels.push(Month_Beam_Avg);
+                    const Month_Horizontal_Avg = monthRow[2];
+                    Month_Horizontal_Avg_labels.push(Month_Horizontal_Avg);
+                });
+                console.log(monthRows);
+        }
+        chartDayBeams(); 
+        chartWeekBeams();
+        chartMonthBeams();
+        </script>
+    </body>
+</html>
